@@ -1,3 +1,9 @@
+# ZoomFFT
+ 频谱细化ZoomFFT/CZT/抛物线插值
+<!-- PROJECT SHIELDS -->
+<!-- PROJECT LOGO -->
+<br />
+
 <div id="top"></div>
 <!--
 *** 感谢查看我们的最佳 README 模板，如果你有好的建议，请复刻（fork）本仓库并且创建一个
@@ -27,23 +33,19 @@
 <!-- 项目 LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
   <h3 align="center">ZoomFFT</h3>
 
   <p align="center">
     频谱细化ZoomFFT/CZT/抛物线插值，估计精确频率！
     <br />
-    <a href="https://github.com/lemurmu/ZoomFFT/README.md"><strong>浏览文档 »</strong></a>
+    <a href="https://github.com/lemurmu/ZoomFFT/tree/master/README.md"><strong>浏览文档 »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/ZoomFFT">查看 Demo</a>
+    <a href="https://github.com/lemurmu/ZoomFFT/tree/master/ZoomFFT">查看 Demo</a>
     ·
-    <a href="https://github.com/othneildrew/ZoomFFT/issues">反馈 Bug</a>
+    <a href="https://github.com/lemurmu/ZoomFFT/tree/master/ZoomFFT/issues">反馈 Bug</a>
     ·
-    <a href="https://github.com/othneildrew/ZoomFFT/issues">请求新功能</a>
+    <a href="https://github.com/lemurmu/ZoomFFT/tree/master/ZoomFFT/issues">请求新功能</a>
   </p>
 </div>
 
@@ -80,10 +82,10 @@
 <!-- 关于本项目 -->
 ## 关于本项目
 
-[![产品截图][product-screenshot]](https://github.com/othneildrew/ZoomFFT/Screenshoot/main.png)
+[![产品截图][product-screenshot]](https://github.com/lemurmu/ZoomFFT/tree/master/Screenshoot/main.png)
 
 在进行DFT的过程中，最后需要对信号的频谱进行采样。经过这种采样所显示出来的频谱仅在各采样点上，而不在此类点上的频谱都显示不出来，即使在其他点上有重要的峰值也会被忽略，这就是栅栏效应。
-[![栅栏效应][product-screenshot]](https://github.com/othneildrew/ZoomFFT/Screenshoot/栅栏效应.png)
+[![栅栏效应][product-screenshot]](https://github.com/lemurmu/ZoomFFT/tree/master/Screenshoot/栅栏效应.png)
 
 这一效应对于周期信号尤为重要，因其频谱是离散的，如处理不当这些离散谱线可能不被显示。
 

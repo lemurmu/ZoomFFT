@@ -43,9 +43,9 @@
     <br />
     <a href="https://github.com/lemurmu/ZoomFFT/tree/master/ZoomFFT">查看 Demo</a>
     ·
-    <a href="https://github.com/lemurmu/ZoomFFT/tree/master/ZoomFFT/issues">反馈 Bug</a>
+    <a href="https://github.com/lemurmu/ZoomFFT/tree/master/issues">反馈 Bug</a>
     ·
-    <a href="https://github.com/lemurmu/ZoomFFT/tree/master/ZoomFFT/issues">请求新功能</a>
+    <a href="https://github.com/lemurmu/ZoomFFT/tree/master/issues">请求新功能</a>
   </p>
 </div>
 

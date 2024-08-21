@@ -82,12 +82,12 @@
 <!-- 关于本项目 -->
 ## 关于本项目
 
-[![产品截图][product-screenshot]](https://github.com/lemurmu/ZoomFFT/tree/blob/Screenshoot/main.png)
+[![产品截图][product-screenshot]](https://github.com/lemurmu/ZoomFFT/blob/master/Screenshoot/main.png)
 
 在进行DFT的过程中，最后需要对信号的频谱进行采样。经过这种采样所显示出来的频谱仅在各采样点上，而不在此类点上的频谱都显示不出来，
 即使在其他点上有重要的峰值也会被忽略，这就是栅栏效应。
 
-[![栅栏效应][product-screenshot]](https://github.com/lemurmu/ZoomFFT/tree/blob/Screenshoot/栅栏效应.png)
+[![栅栏效应][product-screenshot]](https://github.com/lemurmu/ZoomFFT/blob/master/Screenshoot/栅栏效应.png)
 
 这一效应对于周期信号尤为重要，因其频谱是离散的，如处理不当这些离散谱线可能不被显示。
 

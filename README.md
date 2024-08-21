@@ -82,12 +82,10 @@
 <!-- 关于本项目 -->
 ## 关于本项目
 
-[![产品截图][product-screenshot]](https://github.com/lemurmu/ZoomFFT/blob/master/Screenshoot/main.png)
+[![产品截图][product-screenshot]](https://github.com/lemurmu/ZoomFFT/tree/master/Screenshoot/main.png)
 
-在进行DFT的过程中，最后需要对信号的频谱进行采样。经过这种采样所显示出来的频谱仅在各采样点上，而不在此类点上的频谱都显示不出来，
-即使在其他点上有重要的峰值也会被忽略，这就是栅栏效应。
-
-[![栅栏效应][product-screenshot]](https://github.com/lemurmu/ZoomFFT/blob/master/Screenshoot/栅栏效应.png)
+在进行DFT的过程中，最后需要对信号的频谱进行采样。经过这种采样所显示出来的频谱仅在各采样点上，而不在此类点上的频谱都显示不出来，即使在其他点上有重要的峰值也会被忽略，这就是栅栏效应。
+[![栅栏效应][product-screenshot]](https://github.com/lemurmu/ZoomFFT/tree/master/Screenshoot/栅栏效应.png)
 
 这一效应对于周期信号尤为重要，因其频谱是离散的，如处理不当这些离散谱线可能不被显示。
 
@@ -140,18 +138,14 @@ Zoom-FFT根本没有实现“细化“？
 
 CZT变换
 采用FFT算法可以很快算出全部N点DFT值，即Z变换X ( z ) X\left( z \right)X(z)在Z平面单位圆上的全部等间隔取样值。
-
 实际中，也许不需要计算整个单位圆上Z变换的取样，如对于窄带信号，只需要对信号所在的一段频带进行分析，
-
 这时希望频谱的采样集中在这一频带内，以获得较高的分辨率，而频带以外的部分可不考虑，或者对其他围线上的Z变换取样感兴趣，
-
 例如语音信号处理中，需要知道Z变换的极点所在频率，如极点位置离单位圆较远，则其单位圆上的频谱就很平滑，这时很难从中识别出极点所在的频率，
-
 如果采样不是沿单位圆而是沿一条接近这些极点的弧线进行，则在极点所在频率上的频谱将出现明显的尖峰，由此可较准确地测定极点频率。
-
 螺旋线采样是一种适合于这种需要的变换，且可以采用FFT来快速计算，这种变换也称作Chirp-z变换。
-
 <p align="right">(<a href="#top">返回顶部</a>)</p>
+
+
 
 ### 构建工具
 
@@ -171,11 +165,16 @@ CZT变换
 ### 依赖
 
 * .NET Framwork
+  ```sh
+  npm install npm@latest -g
+  ```
+  
 <!-- 贡献 -->
 ## 贡献
 windfall
 
 <p align="right">(<a href="#top">返回顶部</a>)</p>
+
 
 
 <!-- 许可证 -->

@@ -19,6 +19,7 @@ namespace ZoomFFT
             this.spectrumSeries2.DataSeries = spectrumDataSeries2;//zoomFFT
             this.spectrumSeries3.DataSeries = spectrumDataSeries3;//czt
             this.spectrumSeries4.DataSeries = spectrumDataSeries4;//三次样条插值
+            this.spectrumSeries5.DataSeries = spectrumDataSeries5;//汉宁反推
 
             ProductSin();
         }
@@ -29,10 +30,11 @@ namespace ZoomFFT
         private const int N = 2000;
         private double[] waveData = new double[N];
         XyDataSeries<double, double> spectrumDataSeries = new XyDataSeries<double, double>() { SeriesName = "FFT" };
-        XyDataSeries<double, double> spectrumDataSeries1 = new XyDataSeries<double, double>() { SeriesName = "插值" };
+        XyDataSeries<double, double> spectrumDataSeries1 = new XyDataSeries<double, double>() { SeriesName = "抛物线插值" };
         XyDataSeries<double, double> spectrumDataSeries2 = new XyDataSeries<double, double>() { SeriesName = "ZoomFFT" };
         XyDataSeries<double, double> spectrumDataSeries3 = new XyDataSeries<double, double>() { SeriesName = "CZT" };
         XyDataSeries<double, double> spectrumDataSeries4 = new XyDataSeries<double, double>() { SeriesName = "三次样条插值" };
+        XyDataSeries<double, double> spectrumDataSeries5 = new XyDataSeries<double, double>() { SeriesName = "汉宁窗反推" };
 
         XyDataSeries<double, double> waveDataSeries = new XyDataSeries<double, double>();
 
@@ -41,7 +43,8 @@ namespace ZoomFFT
         }
 
         void ProductSin() {
-            fc = 1e3;
+            fc = this.fc_txt.Value;
+            fs = this.fs_txt.Value;
             double t = 1 / fs;
 
             waveDataSeries.Clear();
@@ -69,10 +72,13 @@ namespace ZoomFFT
             }
             this.spectrumAxis.VisibleRange = new DoubleRange(0, fs / 2);
 
+            int peakIndex = power.Take(power.Length / 2).ToList().FindIndex(t => Math.Abs(t - power.Max()) < 0.001);
+
             double pfreq = fs / (N - 1);
             spectrumDataSeries.Clear();
-            freqtxt.Text = string.Empty;
-            freqtxt.Foreground = new SolidColorBrush(Colors.White);
+
+            freqtxt.Text = (peakIndex * pfreq).ToString("F4");
+            freqtxt.Foreground = new SolidColorBrush(Color.FromRgb(0xee,0xce,0x33));
             for (int i = 0; i < power.Length; i++) {
                 spectrumDataSeries.Append(i * pfreq, power[i]);
             }
@@ -145,6 +151,37 @@ namespace ZoomFFT
             freqtxt.Foreground = new SolidColorBrush(Colors.MediumPurple);
         }
 
+        private void hanningBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
+            double[] power = ComputePowerSpectrum();
+            int peakIndex = power.ToList().FindIndex(t => Math.Abs(t - power.Max()) < 0.001);
+
+            int N = power.Length * 2;
+            double alpha = power[peakIndex - 1];
+            double beta = power[peakIndex];
+            double gamma = power[peakIndex + 1];
+
+            double p = 0.5 * (alpha - gamma) / (alpha - 2 * beta + gamma);
+            double interpolatedBin = peakIndex + p;
+
+            //return interpolatedBin * sampleRate / N;
+
+            double freq_l = (peakIndex - 1) * fs / N;
+            double freq_t = peakIndex * fs / N;
+            double freq_r = (peakIndex + 1) * fs / N;
+
+            EquationPeak(freq_l, freq_t, freq_r, alpha, beta, gamma, out double freq_cf, out double ampl_cf);
+
+            freqtxt.Text = freq_cf.ToString("F4");
+            freqtxt.Foreground = new SolidColorBrush(Colors.LawnGreen);
+
+            spectrumDataSeries5.Clear();
+            this.spectrumAxis.VisibleRange = new DoubleRange(0, fs / 2);
+            double pfreq = fs / (N - 1);
+            for (int i = 0; i < power.Length; i++) {
+                spectrumDataSeries5.Append(i * pfreq, power[i]);
+            }
+        }
+
         private void threeChazhiBtn_Click(object sender, System.Windows.RoutedEventArgs e) {
             double[] power = ComputePowerSpectrum();
             double[] freqArr = new double[power.Length];
@@ -163,9 +200,9 @@ namespace ZoomFFT
             }
             var q = CubicSpline.InterpolateAkimaSorted(indexs, power);
             double val = q.Interpolate(peakIndex);
-           
 
-           // freqtxt.Text = freq.ToString("F4");
+
+            // freqtxt.Text = freq.ToString("F4");
         }
 
         private static double InterpolateFrequency(double[] spectrum, int peakIndex, double sampleRate) {
@@ -213,6 +250,22 @@ namespace ZoomFFT
             for (int i = 0; i < power.Length; i++) {
                 spectrumDataSeries1.Append(i * pfreq, power[i]);
             }
+        }
+
+        //左边点幅度，频率，顶点幅度，频率，右边点幅度频率，返回中心频率和幅度
+        private static void EquationPeak(double freq_l, double freq_t, double freq_r, double ampl_l, double ampl_t, double ampl_r, out double freq_cf, out double ampl_cf) {
+            double deta, rbw, volt_l, volt_t, volt_r, volt_cf;
+            volt_l = 50 * Math.Pow(10, ampl_l / 20.0);
+            volt_t = 50 * Math.Pow(10, ampl_t / 20.0);
+            volt_r = 50 * Math.Pow(10, ampl_r / 20.0);
+            deta = Math.Asin((volt_l - volt_r) / (volt_l + volt_r));
+            rbw = freq_t - freq_l;
+
+            freq_cf = freq_t - (4 * deta * rbw) / (2 * Math.PI);
+
+            volt_cf = volt_t / (0.5 - 0.5 * Math.Cos(2 * Math.PI * (freq_t - freq_cf) / (4 * rbw) + Math.PI));
+
+            ampl_cf = 20 * Math.Log10(volt_cf / 50.0);
         }
 
 

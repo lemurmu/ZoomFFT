@@ -7,44 +7,66 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
     Title="ZoomFFT"
-    Width="1200"
+    Width="1300"
     Height="800"
     ShowTitle="True"
-    Style="{StaticResource WindowWin10}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <!--<hc:Window.NonClientAreaContent>
 
     </hc:Window.NonClientAreaContent>-->
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="0,20,0,5" HorizontalAlignment="Center" Orientation="Horizontal">
-            <Button x:Name="sinBtn" Width="100" Margin="5,0" Click="sinBtn_Click" Content="1KHz正弦波" Style="{StaticResource ButtonPrimary}" />
-            <Button x:Name="fftBtn" Width="100" Margin="5,0" Click="fftBtn_Click" Content="FFT" Style="{StaticResource ButtonPrimary}" />
-            <Button x:Name="chazhiBtn" Width="100" Margin="5,0" Click="chazhiBtn_Click" Content="抛物线插值" Style="{StaticResource ButtonPrimary}" />
-            <Button
-                x:Name="threeChazhiBtn"
-                Width="100"
-                Margin="5,0"
-                Click="threeChazhiBtn_Click"
-                Content="三次样条插值"
-                Style="{StaticResource ButtonPrimary}"
-                Visibility="Collapsed" />
-            <Button x:Name="zoomFftBtn" Width="100" Margin="5,0" Click="zoomFftBtn_Click" Content="ZoomFFT" Style="{StaticResource ButtonPrimary}" />
-            <Button x:Name="cztBtn" Width="100" Margin="5,0" Click="cztBtn_Click" Content="CZT" Style="{StaticResource ButtonPrimary}" />
-            <TextBlock Margin="20,0" VerticalAlignment="Center">
-                <Run Text="检测到的信号频率" />
-                <Run x:Name="freqtxt" FontSize="15" FontWeight="Bold"/>
+        <StackPanel>
+            <StackPanel Margin="0,20,0,5" HorizontalAlignment="Center" Orientation="Horizontal">
+                <hc:NumericUpDown
+                    x:Name="fs_txt"
+                    Width="150"
+                    hc:InfoElement.Necessary="True"
+                    hc:TitleElement.Title="采样率"
+                    hc:TitleElement.TitlePlacement="Left"
+                    Style="{StaticResource NumericUpDownExtend}"
+                    Value="50e3" />
+                <hc:NumericUpDown
+                    x:Name="fc_txt"
+                    Width="150"
+                    Margin="10,0"
+                    hc:InfoElement.Necessary="True"
+                    hc:TitleElement.Title="频率"
+                    hc:TitleElement.TitlePlacement="Left"
+                    Style="{StaticResource NumericUpDownExtend}"
+                    Value="1e3" />
+                <Button x:Name="sinBtn" Width="100" Margin="5,0" Click="sinBtn_Click" Content="正弦波" Style="{StaticResource ButtonPrimary}" />
+                <Button x:Name="fftBtn" Width="100" Margin="5,0" Click="fftBtn_Click" Content="FFT" Style="{StaticResource ButtonPrimary}" />
+                <Button x:Name="chazhiBtn" Width="100" Margin="5,0" Click="chazhiBtn_Click" Content="抛物线插值" Style="{StaticResource ButtonPrimary}" />
+                <Button x:Name="hanningBtn" Width="100" Margin="5,0" Click="hanningBtn_Click" Content="汉宁窗反推" Style="{StaticResource ButtonPrimary}" />
+
+                <Button
+                    x:Name="threeChazhiBtn"
+                    Width="100"
+                    Margin="5,0"
+                    Click="threeChazhiBtn_Click"
+                    Content="三次样条插值"
+                    Style="{StaticResource ButtonPrimary}"
+                    Visibility="Collapsed" />
+                <Button x:Name="zoomFftBtn" Width="100" Margin="5,0" Click="zoomFftBtn_Click" Content="ZoomFFT" Style="{StaticResource ButtonPrimary}" />
+                <Button x:Name="cztBtn" Width="100" Margin="5,0" Click="cztBtn_Click" Content="CZT" Style="{StaticResource ButtonPrimary}" />
+            </StackPanel>
+            <TextBlock Margin="0,20,0,0" HorizontalAlignment="Center" Style="{StaticResource TextBlockSubTitleBold}">
+                <Run Text="检测到的信号频率:" />
+                <Run x:Name="freqtxt" FontSize="15" FontWeight="Bold" />
                 <Run Text="Hz" />
             </TextBlock>
+
         </StackPanel>
 
-        <s:SciChartSurface Grid.Row="1" Margin="20">
+        <s:SciChartSurface Grid.Row="1" Grid.Column="1" Margin="20">
 
             <!--  Declare RenderableSeries  -->
             <s:SciChartSurface.RenderableSeries>
@@ -72,7 +94,7 @@
             </s:SciChartSurface.ChartModifier>
         </s:SciChartSurface>
 
-        <s:SciChartSurface Grid.Row="2" Margin="20,0,20,20">
+        <s:SciChartSurface Grid.Row="2" Grid.Column="1" Margin="20,0,20,20">
 
             <!--  Declare RenderableSeries  -->
             <s:SciChartSurface.RenderableSeries>
@@ -80,6 +102,7 @@
                 <s:FastLineRenderableSeries x:Name="spectrumSeries1" Stroke="MediumPurple" StrokeThickness="2" />
                 <s:FastLineRenderableSeries x:Name="spectrumSeries2" Stroke="OrangeRed" StrokeThickness="2" />
                 <s:FastLineRenderableSeries x:Name="spectrumSeries3" Stroke="DeepSkyBlue" StrokeThickness="2" />
+                <s:FastLineRenderableSeries x:Name="spectrumSeries5" Stroke="LawnGreen" StrokeThickness="2" />
                 <s:FastLineRenderableSeries x:Name="spectrumSeries4" s:LegendModifier.IncludeSeries="False" Stroke="SpringGreen" StrokeThickness="2" Visibility="Hidden" />
             </s:SciChartSurface.RenderableSeries>
 
